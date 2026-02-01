@@ -1,0 +1,39 @@
+name: 'globepay_analytics'
+version: '1.0.0'
+config-version: 2
+
+profile: 'globepay_analytics'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  globepay_analytics:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: view
+    marts:
+      +materialized: table
+
+seeds:
+  globepay_analytics:
+    acceptance_report:
+      +column_types:
+        external_ref: varchar
+        date_time: timestamp
+        rates: varchar
+      +schema: raw
+    chargeback_report:
+      +column_types:
+        external_ref: varchar
+      +schema: raw

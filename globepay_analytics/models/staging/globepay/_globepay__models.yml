@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: stg_globepay__acceptance_report
+    description: Staging model for Globepay acceptance report data
+    columns:
+      - name: external_ref
+        description: Unique external reference for the transaction
+        tests:
+          - unique
+          - not_null
+      - name: transaction_timestamp
+        description: Timestamp of the transaction
+        tests:
+          - not_null
+      - name: state
+        description: Transaction state (ACCEPTED or DECLINED)
+        tests:
+          - accepted_values:
+              values: ['ACCEPTED', 'DECLINED']
+      - name: amount_usd
+        description: Transaction amount converted to USD
+        tests:
+          - not_null
+
+  - name: stg_globepay__chargeback_report
+    description: Staging model for Globepay chargeback report data
+    columns:
+      - name: external_ref
+        description: Unique external reference matching acceptance report
+        tests:
+          - unique
+          - not_null

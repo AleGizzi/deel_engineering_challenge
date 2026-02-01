@@ -1,0 +1,7 @@
+globepay_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: globepay_analytics.duckdb
+      schema: analytics

@@ -1,0 +1,45 @@
+version: 2
+
+# Note: Seeds are referenced via ref() in models, but documented here for clarity
+# This file documents the raw data structure that feeds into staging models
+
+sources:
+  - name: globepay
+    description: Raw Globepay payment transaction data from CSV files (loaded as seeds)
+    tables:
+      - name: acceptance_report
+        description: Globepay acceptance report with transaction data
+        columns:
+          - name: external_ref
+            description: Unique external reference for the transaction
+          - name: status
+            description: Status flag (TRUE/FALSE)
+          - name: source
+            description: Payment source (GLOBALPAY)
+          - name: ref
+            description: Internal reference
+          - name: date_time
+            description: Transaction timestamp
+          - name: state
+            description: Transaction state (ACCEPTED/DECLINED)
+          - name: cvv_provided
+            description: Whether CVV was provided
+          - name: amount
+            description: Transaction amount in original currency
+          - name: country
+            description: Two-character ISO country code
+          - name: currency
+            description: Three-character ISO currency code
+          - name: rates
+            description: JSON object with exchange rates
+      - name: chargeback_report
+        description: Globepay chargeback report
+        columns:
+          - name: external_ref
+            description: Unique external reference matching acceptance report
+          - name: status
+            description: Status flag (TRUE/FALSE)
+          - name: source
+            description: Payment source (GLOBALPAY)
+          - name: chargeback
+            description: Chargeback flag (TRUE/FALSE)

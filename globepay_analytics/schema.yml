@@ -1,0 +1,56 @@
+version: 2
+
+
+  - name: int_payment_transactions
+    description: Combined view of all payment transactions with chargeback information
+    columns:
+      - name: external_ref
+        description: Unique external reference for the transaction
+        tests:
+          - unique
+          - not_null
+      - name: is_accepted
+        description: Boolean flag indicating if transaction was accepted
+      - name: is_chargeback
+        description: Boolean flag indicating if transaction resulted in chargeback (false if missing chargeback data)
+      - name: is_missing_chargeback_data
+        description: Boolean flag indicating if transaction is missing chargeback data (true = no chargeback record exists)
+
+  - name: mart_payment_summary
+    description: Daily summary of payment metrics by country and currency
+    columns:
+      - name: transaction_date
+        description: Date of transactions
+        tests:
+          - not_null
+      - name: acceptance_rate_pct
+        description: Percentage of transactions that were accepted
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+  - name: mart_country_metrics
+    description: Country-level aggregated payment metrics
+    columns:
+      - name: country
+        description: Two-character ISO country code
+        tests:
+          - not_null
+      - name: total_declined_amount_usd
+        description: Total USD amount of declined transactions for this country/currency
+      - name: acceptance_rate_pct
+        description: Percentage of transactions that were accepted
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+  - name: mart_daily_metrics
+    description: Daily time-series metrics for payment performance
+    columns:
+      - name: transaction_date
+        description: Date of transactions
+        tests:
+          - unique
+          - not_null
